@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>轮播6.12</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        .banner{
+            width: 1000px;
+            margin: 200px auto;
+            overflow: hidden;
+            position: relative;
+        }
+        ul{
+            width: 6000px;
+            list-style: none;
+        }
+        ul.animate{
+            transition: all 1s;
+        }
+        li{
+	        list-style: none;
+	        float: left;
+	        width: 1000px;
+	        height: 438px;
+        }
+        .banner:hover .btn{
+            background-color:rgba(0,0,0,0.5);
+            opacity:1;
+        }
+        
+        .btn{
+	        width: 100px;
+	        height: 438px;
+	        opacity: 0;
+	        background: #000;
+	        position: absolute;
+	        top: 0px;
+	        line-height: 438px;
+	        font-size: 50px;
+	        text-align: center;
+	        cursor: pointer;
+            background: rgba(0,0,0,0.5);
+	        transition:all 1s;
+        }
+        .btn:hover{
+	        background:  rgba(0,0,0,.7);
+	        color: #fff;
+        }
+        .btn.rt{
+	        right: 0;
+        }
+        .btn.lf{
+	        left: 0;
+        }
+        .icon{
+            position: absolute;
+            bottom: 0;
+            margin: 0 auto;
+            width: 100%;
+            text-align: center;
+            
+        }
+        .icon span{
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background:rgba(255,255,255,0.5);
+            border: 1px solid rgba(0,0,0,0.5);
+            border-radius: 50%;
+            margin: 0 3px;
+        }
+    </style>
+    
+</head>
+<body>
+    <div class="banner">
+        <ul class="ul">
+            <li><img src="img/1.jpg" alt=""></li>
+            <li><img src="img/2.jpg" alt=""></li>
+            <li><img src="img/3.jpg" alt=""></li>
+            <li><img src="img/4.jpg" alt=""></li>
+            <li><img src="img/5.jpg" alt=""></li>
+            <li><img src="img/6.jpg" alt=""></li>
+        </ul>
+        <span class="btn lf">《</span>
+        <span class="btn rt">》</span>
+        <div class="icon">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+    <script>
+            var banner=document.getElementsByClassName("banner")[0];
+            var ulobj=banner.children[0];
+            var liobj=ulobj.children;
+            var next=document.getElementsByClassName("rt")[0];
+            var prev=document.getElementsByClassName("lf")[0];
+            var len = liobj.length;
+            var num=0;
+            var icons=document.querySelectorAll('.icon span')
+           for (let i = 0; i < liobj.length; i++) {
+                liobj[i].index=i  
+           }
+            for(let i=0;i<icons.length;i++){
+                icons[i].index=i;
+                icons[i].onclick=function(){
+                    var liobj=ulobj.children;
+                    var flg=0;
+                    // console.log(liobj)
+                    for (let index = 0; index < liobj.length; index++) {
+                        
+                       if(liobj[index].index==this.index){
+                            flg=index
+                           break 
+                       }
+                        
+                    }
+                    // console.log(flg)
+                    for (let i = 0; i <flg; i++) {
+                        ulobj.appendChild(liobj[0]);
+                        
+                    }
+                    // console.log(this.index)
+                }
+            }
+                    //定义一个定时器
+            var temp=setInterval(moveright,2000);
+            //给右按钮添加函数
+            banner.onmousemove=function(){
+                clearInterval(temp);
+            }
+            banner.onmouseleave=function(){
+                temp=setInterval(moveright,2000);
+            }
+            next.onclick=function(){
+                moveleft();
+            }
+            //给左按钮添加函数
+            // prev.onmousemove=function(){
+            //     clearInterval(temp);
+            // }
+            // prev.onmouseleave=function(){
+            //     temp=setInterval(moveright,2000);
+            // }
+            prev.onclick=function(){
+                moveright();
+            }
+            //动画函数
+            //图片向前动
+            function moveright(){
+                ulobj.classList.add("animate");
+                ulobj.style.marginLeft=-1000+"px";
+                
+                setTimeout(function(){
+                    ulobj.classList.remove("animate");
+                    ulobj.appendChild(liobj[0]);
+                    ulobj.style.marginLeft=0;
+                },1000)
+            }
+           //图片向后动
+           function moveleft(){
+                ulobj.classList.remove("animate");
+                ulobj.insertBefore(liobj[len-1],liobj[0]);
+                ulobj.style.marginLeft=-1000+"px";
+    
+                setTimeout(function(){
+                    ulobj.classList.add("animate");
+                ulobj.style.marginLeft=0+"px";
+        },20)
+      }
+   
+    
+        </script>
+</body>
+</html>
